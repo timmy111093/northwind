@@ -5,7 +5,11 @@ interface AsideProps {}
 
 const Aside: FC<AsideProps> = () => (
   <aside className={styles.Aside}>
-    Aside Component
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">About</a>
+    </nav>
   </aside>
 );
 

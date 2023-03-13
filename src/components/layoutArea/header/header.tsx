@@ -5,7 +5,7 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => (
   <header className={styles.Header}>
-    Header Component
+    <h1>Northwind</h1>
   </header>
 );
 

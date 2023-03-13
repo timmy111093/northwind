@@ -3,6 +3,7 @@ import Header from './header/header';
 import Footer from './footer/footer';
 import Aside from './aside/aside';
 import Main from './main/main';
+import Discount from '../HomeArea/Discount/Discount';
 import styles from './layoutArea.module.scss';
 
 interface LayoutAreaProps {}
