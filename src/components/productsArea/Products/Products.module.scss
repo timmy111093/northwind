@@ -1,2 +1,37 @@
 .Products {
+
+      
+      &__list{
+         display: flex;
+         flex-wrap: wrap;
+      }
+
+      & > a{
+            width: 140px;
+            height: 70px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            color: black;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            outline: none;
+            padding: 0;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            position: fixed;
+            bottom: 75px;
+            right: 25px;
+            &:hover{
+                  background-color: #2ee59d;
+                  box-shadow: 0px 15px 20px rgba(46,229,157,0.4);
+                  color: white; 
+            }
+      }
 }

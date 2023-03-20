@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Product from '../../../Models/Product';
 import ProductItem from './productItem/productItem';
 import styles from './Products.module.scss';
+import { NavLink } from 'react-router-dom';
 
 interface ProductsProps {
   products: Product[];
@@ -17,9 +18,12 @@ const Products: FC<ProductsProps> = ({products}) => {
   }
 
   return(
-    <ul className={styles.Products}>
+    <div className={styles.Products}>
+    <NavLink  to='/products/new'>Add Product</NavLink>
+    <ul className={styles.Products__list}>
       {renderProducts()}
     </ul>
+    </div>
   );
 }
 

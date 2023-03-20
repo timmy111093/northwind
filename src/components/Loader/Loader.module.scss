@@ -1,0 +1,25 @@
+.Loader {
+      background: #fff;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      position: relative;
+      animation: spin 1s ease-in-out infinite alternate;
+      &::after{
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 5px solid;
+            border-color: #ff3dd4 transparent;
+      }
+}
+
+@keyframes spin{
+      0%{
+            transform: translateX(-150%) rotate(0deg);
+      }
+      100%{
+            transform: translateX(150%) rotate(360deg);
+      }
+}

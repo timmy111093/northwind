@@ -13,15 +13,23 @@ export const getProducts = async (): Promise<Product[]> => {
    setTimeout(() => {
       
          resolve(products);
-      }, 3000);
-
-      });
+      }, 2000);
+   });
    
 
    //extract products
+}
 
+export const getProduct = async (id:number):Promise<Product> => {
+   //ajax
+   const response = await axios.get(`${BASE_API_URL}/products/${id}`);
+   // use the key 'data' inside response{promise}
+   const product = response.data;
 
-
-
+   return new Promise((resolve,reject) => {
+      setTimeout(() => {
+        resolve(product);
+      },1500)
+   })
 
 }

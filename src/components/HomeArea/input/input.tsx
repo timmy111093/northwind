@@ -7,6 +7,7 @@ const Input: FC<InputProps> = () => {
   const [value,setValue] = useState('');
   const submitHandler = () => {
      console.log(value);
+     setValue('');
   }
   return(
     <div>
