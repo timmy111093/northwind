@@ -1,38 +1,47 @@
-import React, { FC } from 'react';
+import React, { FC,useEffect } from 'react';
 import {useForm} from 'react-hook-form';
 import Product from '../../../Models/Product';
-import styles from './AddProduct.module.scss';
+import styles from './EditProduct.module.scss';
 import validation from './validation';
 import FormErrors from '../../FormErrors/FormErrors';
 import Button from '../../Button/Button';
 import Modal from '../../Modal/Modal';
-import { addProduct } from '../../../Utils/fetch';
+import { addProduct, updateProduct } from '../../../Utils/fetch';
 
-interface AddProductProps {
+interface EditProductProps {
   onClose: () => void;
-  onAddProduct: (product:Product) => void; 
+  onEditProduct: (product:Product) => void; 
+  product: Product;
 }
 
-const AddProduct: FC<AddProductProps> = ({onClose,onAddProduct}) => {
+const EditProduct: FC<EditProductProps> = ({onClose,onEditProduct,product}) => {
 
-  const {register,handleSubmit, formState} = useForm<Product>();
+  const {register,handleSubmit, formState, setValue} = useForm<Product>();
 
   const submitProductHandler = (product:Product) => {
-    addProduct(product).then((_product) => {
-      onAddProduct(_product);
+
+    updateProduct(product).then((response) => {
+      onEditProduct(response);
       onClose();
     }).catch((err) => console.log(err))
+    
   }
 
-  // console.log(register('name'));
+  useEffect(() => {
+    setValue('id',product.id);
+    setValue('name',product.name);
+    setValue('price',product.price);
+    setValue('stock',product.stock);
+  },[])
+
   return(
     <Modal onClose={onClose}>
-          <div className={styles.AddProduct}>
+          <div className={`Box ${styles.EditProduct}`}>
           <span className='closing' onClick={onClose}>Close</span><br />
 
-
       <form onSubmit={handleSubmit(submitProductHandler)}>
-      <h2>Add Product</h2>
+      <h2>Edit Product</h2>
+      <input type="hidden" value={product.id} />
          <FormErrors error={formState.errors.name?.message}>
             <label>Name:</label>
             <input type="text" {...register('name', validation.name)} />
@@ -49,11 +58,11 @@ const AddProduct: FC<AddProductProps> = ({onClose,onAddProduct}) => {
         <label>image:</label>
         <input type="file" accept='image/*' {...register('image')} />
         </FormErrors>
-        <Button>Add</Button>
+        <Button>Update</Button>
       </form>
     </div>
     </Modal>
   );
 }
 
-export default AddProduct;
+export default EditProduct;

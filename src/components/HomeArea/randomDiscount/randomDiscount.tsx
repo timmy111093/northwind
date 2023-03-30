@@ -6,7 +6,7 @@ interface RandomDiscountProps {}
 const RandomDiscount: FC<RandomDiscountProps> = () => {
   const [randomDiscount,setRandomDiscount] = useState(0);
   const generateRandDiscount = () => {
-    const random = Math.floor(Math.random() * 100);
+    const random = Math.floor(Math.random() * 50);
     setRandomDiscount(random)
   }
   const discountStr = randomDiscount > 0 ? `${randomDiscount}%` : 0;

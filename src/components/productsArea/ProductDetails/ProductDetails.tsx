@@ -1,19 +1,49 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate,NavLink } from 'react-router-dom';
 import styles from './ProductDetails.module.scss';
 import Product from '../../../Models/Product';
-import { getProduct } from '../../../Utils/fetch';
+import { deleteProduct, getProduct } from '../../../Utils/fetch';
 import { BASE_API_URL } from '../../../config';
 import Loader from '../../Loader/Loader';
+import EditProduct from '../EditProduct/EditProduct';
+
 
 interface ProductDetailsProps {}
 
 const ProductDetails: FC<ProductDetailsProps> = () => {
 
   const params = useParams();
+  const navigate = useNavigate();
+  const [showEditedProduct,setShowEditedProduct] = useState(false);
   const [product,setProduct] = useState<Product>();
   const [loading,setLoading] = useState(true);
 
+  const modalToggleHandler = () => {
+    setShowEditedProduct((prevState) => !prevState);
+ }
+
+ const editProductHandler = (product:Product) => {
+    setProduct((prevProduct) => {
+      const updatedProduct =  {...prevProduct, ...product};
+      return updatedProduct;
+    })
+ }
+
+  const deleteProductHandler = async () => {
+    if(params.prodId){
+      setLoading(true);
+      try{
+        const success = await deleteProduct(+params.prodId);
+        if(success) {
+          alert('product was deleted successfully!');
+          navigate('/products');
+        }
+      }catch(err){
+        console.log(err);
+        setLoading(false);
+      }
+    }
+  }
 
   useEffect(() => {
 
@@ -42,6 +72,11 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
             <h4>Name: {product.name}</h4>
             <h4>Price: {product.price}</h4>
             <h4>Stock: {product.stock}</h4>
+            <NavLink to="/products">Back</NavLink>
+            <span> | </span>
+            <NavLink onClick={modalToggleHandler} to="#">Edit</NavLink>
+            <span> | </span>
+            <NavLink onClick={deleteProductHandler} to="#">Delete</NavLink>
           </div>
         </div>
       )
@@ -59,6 +94,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
         {renderProduct()}
       </div>
 
+      {(showEditedProduct && product) && <EditProduct onEditProduct={editProductHandler} onClose={modalToggleHandler} product={product}/>}
     </div>
   );
 }
