@@ -1,41 +1,48 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useParams,useNavigate,NavLink } from 'react-router-dom';
+import { useAppSelector,useAppDispatch } from '../../../hooks';
 import styles from './ProductDetails.module.scss';
 import Product from '../../../Models/Product';
-import { deleteProduct, getProduct } from '../../../Utils/fetch';
+import { deleteProductAsync, getProduct } from '../../../Utils/fetch';
 import { BASE_API_URL } from '../../../config';
 import Loader from '../../Loader/Loader';
 import EditProduct from '../EditProduct/EditProduct';
+import { setProduct, setProducts,deleteProduct } from '../productsSlice';
 
 
 interface ProductDetailsProps {}
 
 const ProductDetails: FC<ProductDetailsProps> = () => {
-
+  const dispacth = useAppDispatch();
+  const {product} = useAppSelector((state) => state.productsState);
   const params = useParams();
   const navigate = useNavigate();
+
   const [showEditedProduct,setShowEditedProduct] = useState(false);
-  const [product,setProduct] = useState<Product>();
+  // const [product,setProduct] = useState<Product>();
   const [loading,setLoading] = useState(true);
 
   const modalToggleHandler = () => {
     setShowEditedProduct((prevState) => !prevState);
  }
 
- const editProductHandler = (product:Product) => {
-    setProduct((prevProduct) => {
-      const updatedProduct =  {...prevProduct, ...product};
-      return updatedProduct;
-    })
- }
+//  const editProductHandler = (product:Product) => {
+    // setProduct((prevProduct) => {
+    //   const updatedProduct =  {...prevProduct, ...product};
+    //   return updatedProduct;
+    // })
+//  }
+
+
 
   const deleteProductHandler = async () => {
     if(params.prodId){
       setLoading(true);
       try{
-        const success = await deleteProduct(+params.prodId);
+        const success = await deleteProductAsync(+params.prodId);
         if(success) {
           alert('product was deleted successfully!');
+          dispacth(deleteProduct(+params.prodId));
           navigate('/products');
         }
       }catch(err){
@@ -50,7 +57,8 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
     if(params.prodId){
 
       getProduct(+params.prodId).then((product) => {
-         setProduct(product);
+        //  setProduct(product);
+        dispacth(setProduct(product));
       }).catch((err) => {
         console.log(err.message);
       }).finally(() => {
@@ -94,7 +102,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
         {renderProduct()}
       </div>
 
-      {(showEditedProduct && product) && <EditProduct onEditProduct={editProductHandler} onClose={modalToggleHandler} product={product}/>}
+      {(showEditedProduct && product) && <EditProduct onClose={modalToggleHandler} product={product}/>}
     </div>
   );
 }

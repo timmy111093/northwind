@@ -1,21 +1,29 @@
 import React, { FC,useEffect,useState } from 'react';
+import { useAppDispatch,useAppSelector } from '../../hooks';
 import Product from '../../Models/Product';
 import { getProducts } from '../../Utils/fetch';
 import Loader from '../Loader/Loader';
 import Products from './Products/Products';
+import {setProducts} from './productsSlice';
 import styles from './productsArea.module.scss';
+
 
 interface ProductsAreaProps {}
 
 const ProductsArea: FC<ProductsAreaProps> = () => {
 
-  const [products,setProducts] = useState<Product[]>([]);
+  // const [products,setProducts] = useState<Product[]>([]); ---- without Redux
+  const {products} = useAppSelector((state) => state.productsState);
+  const dispacth = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=> {
     setIsLoading(true);
     getProducts().then((products) => {
-      setProducts(products);
+      // setProducts(products);
+
+      dispacth(setProducts(products));
+
     }).catch((err) => {
       console.log(err.message);
     }).finally(() => {
@@ -23,13 +31,16 @@ const ProductsArea: FC<ProductsAreaProps> = () => {
     })
   },[])
  
-  const addProductHandler = (product:Product) => {
-    setProducts((prevProducts) => {
-      const productsToUpdate = [...prevProducts];
-      productsToUpdate.push(product);
-      return productsToUpdate;
-    })
-  }
+  // const addProductHandler = (product:Product) => {
+    
+  //   dispacth(add())
+
+    // setProducts((prevProducts) => {
+    //   const productsToUpdate = [...prevProducts];
+    //   productsToUpdate.push(product);
+    //   return productsToUpdate;
+    // })
+  // }
 
   // if(products.length === 0) return <p>no products</p>;
   //  return <Loader />;
@@ -43,7 +54,7 @@ const ProductsArea: FC<ProductsAreaProps> = () => {
 
   return(
     <div className={styles.ProductsArea}>
-      <Products onAddProduct={addProductHandler} products={products}/>
+      <Products  products={products}/>
     </div>
   );
 }

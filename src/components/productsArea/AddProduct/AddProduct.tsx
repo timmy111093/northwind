@@ -1,25 +1,29 @@
 import React, { FC } from 'react';
 import {useForm} from 'react-hook-form';
+import { useAppDispatch } from '../../../hooks';
 import Product from '../../../Models/Product';
 import styles from './AddProduct.module.scss';
 import validation from './validation';
 import FormErrors from '../../FormErrors/FormErrors';
 import Button from '../../Button/Button';
 import Modal from '../../Modal/Modal';
-import { addProduct } from '../../../Utils/fetch';
+import { addProduct } from '../productsSlice';
+import { addingProduct } from '../../../Utils/fetch';
 
 interface AddProductProps {
   onClose: () => void;
-  onAddProduct: (product:Product) => void; 
+
 }
 
-const AddProduct: FC<AddProductProps> = ({onClose,onAddProduct}) => {
+const AddProduct: FC<AddProductProps> = ({onClose}) => {
 
   const {register,handleSubmit, formState} = useForm<Product>();
+  const dispacth = useAppDispatch();
 
   const submitProductHandler = (product:Product) => {
-    addProduct(product).then((_product) => {
-      onAddProduct(_product);
+    addingProduct(product).then((_product) => {
+      // onAddProduct(_product);
+      dispacth(addProduct(_product))
       onClose();
     }).catch((err) => console.log(err))
   }

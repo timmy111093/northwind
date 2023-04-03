@@ -8,10 +8,9 @@ import AddProduct from '../AddProduct/AddProduct';
 
 interface ProductsProps {
   products: Product[];
-  onAddProduct: (product:Product) => void; 
 }
 
-const Products: FC<ProductsProps> = ({products,onAddProduct}) => {
+const Products: FC<ProductsProps> = ({products}) => {
 
   const [showAddProduct,setShowAddProduct] = useState(false);
 
@@ -32,7 +31,7 @@ const Products: FC<ProductsProps> = ({products,onAddProduct}) => {
     <ul className={styles.Products__list}>
       {renderProducts()}
     </ul>
-    {showAddProduct && <AddProduct onAddProduct={onAddProduct} onClose={modalToggleHandler}/>}
+    {showAddProduct && <AddProduct onClose={modalToggleHandler}/>}
     </div>
   );
 }

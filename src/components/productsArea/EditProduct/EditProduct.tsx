@@ -1,30 +1,32 @@
 import React, { FC,useEffect } from 'react';
 import {useForm} from 'react-hook-form';
+import { useAppDispatch } from '../../../hooks';
+import { updateProduct } from '../productsSlice';
 import Product from '../../../Models/Product';
 import styles from './EditProduct.module.scss';
 import validation from './validation';
 import FormErrors from '../../FormErrors/FormErrors';
 import Button from '../../Button/Button';
 import Modal from '../../Modal/Modal';
-import { addProduct, updateProduct } from '../../../Utils/fetch';
+import { addingProduct, updateProductAsync } from '../../../Utils/fetch';
+
 
 interface EditProductProps {
   onClose: () => void;
-  onEditProduct: (product:Product) => void; 
   product: Product;
 }
 
-const EditProduct: FC<EditProductProps> = ({onClose,onEditProduct,product}) => {
+const EditProduct: FC<EditProductProps> = ({onClose,product}) => {
 
   const {register,handleSubmit, formState, setValue} = useForm<Product>();
-
+  const dispacth = useAppDispatch();
   const submitProductHandler = (product:Product) => {
 
-    updateProduct(product).then((response) => {
-      onEditProduct(response);
+    updateProductAsync(product).then((response) => {
+      // onEditProduct(response);
+      dispacth(updateProduct(response));
       onClose();
     }).catch((err) => console.log(err))
-    
   }
 
   useEffect(() => {

@@ -41,7 +41,7 @@ export const getProduct = async (id:number):Promise<Product> => {
 // patch - update partial data in server - update 1 / few props
 // delete - dalete data from server
 
-export const addProduct = async (product:Product):Promise<Product> => {
+export const addingProduct = async (product:Product):Promise<Product> => {
 
    // AJAX request - send a new product to the server / recieving back the added product
 
@@ -62,7 +62,7 @@ export const addProduct = async (product:Product):Promise<Product> => {
    });
 }
 
-export const updateProduct = async (product:Product):Promise<Product> => {
+export const updateProductAsync = async (product:Product):Promise<Product> => {
 
    // AJAX request - send a new product to the server / recieving back the added product
 
@@ -83,7 +83,7 @@ export const updateProduct = async (product:Product):Promise<Product> => {
    });
 }
 
-export const deleteProduct =async (id:number):Promise<boolean> => {
+export const deleteProductAsync = async (id:number):Promise<boolean> => {
 
    await axios.delete(`${BASE_API_URL}/products/${id}`);
 
