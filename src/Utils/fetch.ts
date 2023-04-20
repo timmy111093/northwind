@@ -1,17 +1,13 @@
-import axios from 'axios';
+import axios from '../axios';
 import Product from '../Models/Product';
-import { BASE_API_URL } from '../config';
-import { resolve } from 'path';
 
 export const getProducts = async (): Promise<Product[]> => {
    //ajax
-   const response = await axios.get<Product[]>(`${BASE_API_URL}/products`);
-
+   const response = await axios.get<Product[]>(`/products`);
    const products = response.data;
 
    return new Promise((resolve,reject)=> {
    setTimeout(() => {
-      
          resolve(products);
       }, 2000);
    });
@@ -22,7 +18,7 @@ export const getProducts = async (): Promise<Product[]> => {
 
 export const getProduct = async (id:number):Promise<Product> => {
    //ajax
-   const response = await axios.get(`${BASE_API_URL}/products/${id}`);
+   const response = await axios.get(`/products/${id}`);
    // use the key 'data' inside response{promise}
    const product = response.data;
 
@@ -52,7 +48,7 @@ export const addingProduct = async (product:Product):Promise<Product> => {
    formData.append('stock', product.stock.toString());
    formData.append('image', product.image[0]); // image = FileList image[0] = File / Blob
    
-   const response = await axios.post(`${BASE_API_URL}/products/`,formData);
+   const response = await axios.post(`/products/`,formData);
    const addedProduct = response.data;
 
    return new Promise((resolve,reject) => {
@@ -73,7 +69,7 @@ export const updateProductAsync = async (product:Product):Promise<Product> => {
    formData.append('stock', product.stock.toString());
    formData.append('image', product.image[0]); // image = FileList image[0] = File / Blob
    
-   const response = await axios.put(`${BASE_API_URL}/products/${product.id}`,formData);
+   const response = await axios.put(`/products/${product.id}`,formData);
    const updatedProduct = response.data;
 
    return new Promise((resolve,reject) => {
@@ -85,7 +81,7 @@ export const updateProductAsync = async (product:Product):Promise<Product> => {
 
 export const deleteProductAsync = async (id:number):Promise<boolean> => {
 
-   await axios.delete(`${BASE_API_URL}/products/${id}`);
+   await axios.delete(`/products/${id}`);
 
    return new Promise((resolve,reject) => {
       setTimeout(() => {

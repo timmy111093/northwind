@@ -8,6 +8,8 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import ProductsArea from '../productsArea/productsArea';
 import ProductDetails from '../productsArea/ProductDetails/ProductDetails';
 import AddProduct from '../productsArea/AddProduct/AddProduct';
+import Register from '../AuthArea/Register/Register';
+import Login from '../AuthArea/Login/Login';
 
 interface RouterProps
  {}
@@ -34,6 +36,11 @@ const Router: FC<RouterProps> = () => (
     {/* error route */}
     <Route path='*' element={<PageNotFound />}/>
 
+    {/* register route */}
+    <Route path='/register' element={<Register />}/>
+    
+    {/* login route */}
+    <Route path='/login' element={<Login />}/>
 
   </Routes>
 );

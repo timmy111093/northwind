@@ -10,11 +10,15 @@ import EditProduct from '../EditProduct/EditProduct';
 import { setProduct, setProducts,deleteProduct } from '../productsSlice';
 
 
-interface ProductDetailsProps {}
+interface ProductDetailsProps {
+  
+}
 
 const ProductDetails: FC<ProductDetailsProps> = () => {
   const dispacth = useAppDispatch();
-  const {product} = useAppSelector((state) => state.productsState);
+  const {productsState,authState} = useAppSelector((state) => state);
+  const {product,products} = productsState;
+  const {user} = authState;
   const params = useParams();
   const navigate = useNavigate();
 
@@ -26,14 +30,19 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
     setShowEditedProduct((prevState) => !prevState);
  }
 
-//  const editProductHandler = (product:Product) => {
-    // setProduct((prevProduct) => {
-    //   const updatedProduct =  {...prevProduct, ...product};
-    //   return updatedProduct;
-    // })
-//  }
-
-
+ const renderOption = () => {
+  if(user){
+    return (
+      <>
+      <span> | </span>
+      <NavLink onClick={modalToggleHandler} to="#">Edit</NavLink>
+      <span> | </span>
+      <NavLink onClick={deleteProductHandler} to="#">Delete</NavLink>
+      </>
+    )
+  }
+  return null;
+ }
 
   const deleteProductHandler = async () => {
     if(params.prodId){
@@ -56,16 +65,23 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
     if(params.prodId){
 
-      getProduct(+params.prodId).then((product) => {
-        //  setProduct(product);
+      const id = +params.prodId;
+      const product = products.find((p) => p.id === id);
+      if(product){
         dispacth(setProduct(product));
-      }).catch((err) => {
-        console.log(err.message);
-      }).finally(() => {
-        setLoading(false)
-      });
+        setLoading(false);
+      }
+      else{
+        getProduct(+params.prodId).then((product) => {
+          //  setProduct(product);
+          dispacth(setProduct(product));
+        }).catch((err) => {
+          console.log(err.message);
+        }).finally(() => {
+          setLoading(false)
+        });
+      }
     }  
-
   },[])
 
   const renderProduct = () => {
@@ -81,10 +97,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
             <h4>Price: {product.price}</h4>
             <h4>Stock: {product.stock}</h4>
             <NavLink to="/products">Back</NavLink>
-            <span> | </span>
-            <NavLink onClick={modalToggleHandler} to="#">Edit</NavLink>
-            <span> | </span>
-            <NavLink onClick={deleteProductHandler} to="#">Delete</NavLink>
+            {renderOption()}
           </div>
         </div>
       )
@@ -101,7 +114,6 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
       <div className={styles.ProductDetails__body}>
         {renderProduct()}
       </div>
-
       {(showEditedProduct && product) && <EditProduct onClose={modalToggleHandler} product={product}/>}
     </div>
   );

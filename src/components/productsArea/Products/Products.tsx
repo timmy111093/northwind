@@ -5,12 +5,15 @@ import styles from './Products.module.scss';
 import { NavLink } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
 import AddProduct from '../AddProduct/AddProduct';
+import { useAppSelector } from '../../../hooks';
 
 interface ProductsProps {
   products: Product[];
 }
 
 const Products: FC<ProductsProps> = ({products}) => {
+
+  const {user} = useAppSelector((state) => state.authState);
 
   const [showAddProduct,setShowAddProduct] = useState(false);
 
@@ -27,7 +30,7 @@ const Products: FC<ProductsProps> = ({products}) => {
 
   return(
     <div className={styles.Products}>
-    <NavLink onClick={modalToggleHandler} to='#'>Add Product</NavLink>
+    {user && <NavLink onClick={modalToggleHandler} to='#'>Add Product</NavLink>}
     <ul className={styles.Products__list}>
       {renderProducts()}
     </ul>
