@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/notrhwind_react/static/css/main.5061c9fc.css",
+    "main.js": "/notrhwind_react/static/js/main.072881c0.js",
+    "static/js/787.dd9e09b4.chunk.js": "/notrhwind_react/static/js/787.dd9e09b4.chunk.js",
+    "index.html": "/notrhwind_react/index.html",
+    "main.5061c9fc.css.map": "/notrhwind_react/static/css/main.5061c9fc.css.map",
+    "main.072881c0.js.map": "/notrhwind_react/static/js/main.072881c0.js.map",
+    "787.dd9e09b4.chunk.js.map": "/notrhwind_react/static/js/787.dd9e09b4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5061c9fc.css",
+    "static/js/main.072881c0.js"
+  ]
+}
